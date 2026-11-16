@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Бот платного канала - премиум</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0c0f;--panel:#13151a;--line:#23262e;--ink:#f1ede6;--mut:#8d8a84;--gold:#e3c48d;--gold2:#b8955a;--tg:#2aabee;--ok:#5fd39a;--bad:#ff7a6b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Manrope,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-20%;background:radial-gradient(40% 30% at 15% 10%,rgba(227,196,141,.10),transparent 70%),radial-gradient(35% 30% at 90% 80%,rgba(42,171,238,.08),transparent 70%);pointer-events:none;z-index:0}
+.top{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:36px 20px 10px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.top h1{font:400 clamp(38px,5.6vw,74px)/.95 "Instrument Serif",serif;letter-spacing:-.01em}
+.top h1 em{color:var(--gold);font-style:italic}
+.top p{color:var(--mut);max-width:430px;font-size:15px}
+.chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12px;color:var(--mut);margin-bottom:14px}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:20px 20px 60px;display:grid;grid-template-columns:400px 1fr;gap:40px;align-items:start}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}}
+/* phone */
+.phw{position:sticky;top:20px}
+@media(max-width:980px){.phw{position:relative;top:0}}
+.phone{width:min(384px,100%);height:780px;border-radius:52px;padding:11px;background:linear-gradient(145deg,#3a3630,#121212 40%,#2a2723);margin:0 auto;box-shadow:0 50px 100px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.08)}
+.scr{position:relative;height:100%;border-radius:42px;overflow:hidden;background:#0e1621}
+.isl{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:104px;height:30px;border-radius:20px;background:#000;z-index:9}
+.sb{height:46px;display:flex;justify-content:space-between;align-items:center;padding:6px 26px 0;font:700 13px Manrope;color:#fff}
+.hd{display:flex;align-items:center;gap:10px;padding:6px 12px 10px;background:#17212b;color:#fff;border-bottom:1px solid #0b121a}
+.hd .bk{color:var(--tg);font-size:22px;line-height:1}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:400 22px "Instrument Serif";color:#1a140b;background:conic-gradient(from 210deg,#f6e2b8,#b8955a,#f6e2b8);flex:none}
+.hd b{display:block;font-size:15px;line-height:1.2}.hd span{font-size:12px;color:#7f91a4}
+.hd .r{margin-left:auto;display:flex;gap:6px}
+.hd .r button{border:0;background:#22303e;color:#9fb3c7;border-radius:8px;padding:5px 8px;font:700 11px Manrope;cursor:pointer}
+.chat{position:absolute;top:104px;bottom:0;left:0;right:0;overflow-y:auto;padding:12px 10px 30px;background:#0e1621;scrollbar-width:none}
+.chat::-webkit-scrollbar{display:none}
+.chat:before{content:"";position:fixed}
+.day{text-align:center;margin:8px 0}.day span{background:rgba(0,0,0,.35);color:#c9d6e2;font-size:12px;padding:3px 10px;border-radius:99px}
+.m{max-width:86%;margin:5px 0;padding:8px 11px 6px;border-radius:16px 16px 16px 6px;font-size:14px;color:#e9eef3;background:#182533;white-space:pre-line;animation:pop .45s cubic-bezier(.2,.9,.25,1) both;position:relative}
+.m.me{margin-left:auto;background:#2b5278;border-radius:16px 16px 6px 16px}
+.m .t{display:block;text-align:right;font-size:11px;color:#7f91a4;margin-top:1px}
+.m.me .t{color:#8fb4d8}
+.m.sys{background:rgba(227,196,141,.12);border:1px solid rgba(227,196,141,.25);color:#f3e5c8}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.cover{border-radius:12px;overflow:hidden;margin:-4px -7px 8px;height:170px;position:relative;background:#120f0b}
+.cover canvas{position:absolute;inset:0;width:100%;height:100%}
+.cover b{position:absolute;left:14px;bottom:30px;font:400 32px/1 "Instrument Serif";color:#fff}
+.cover small{position:absolute;left:14px;bottom:11px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.kb{display:grid;gap:5px;margin:4px 0 10px;max-width:86%;animation:pop .45s .1s both}
+.kb.two{grid-template-columns:1fr 1fr}
+.kb button{border:0;border-radius:10px;padding:10px 8px;background:rgba(42,171,238,.15);color:#9ad6ff;font:700 13px Manrope;cursor:pointer;transition:background .2s,transform .15s}
+.kb button:hover{background:rgba(42,171,238,.27)}.kb button:active{transform:scale(.97)}
+.kb button:disabled{opacity:.35;cursor:default}
+.tar{display:grid;gap:7px;margin:4px 0 10px;max-width:92%;animation:pop .45s both}
+.tc{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#182533;border:1px solid #243446;border-radius:14px;padding:11px 12px;cursor:pointer;color:#e9eef3;text-align:left;font:inherit;transition:border-color .2s,transform .2s}
+.tc:hover{border-color:var(--gold2);transform:translateY(-1px)}
+.tc b{display:block;font-size:14px}.tc span{font-size:12px;color:#8ea3b8}
+.tc .p{font:800 15px Manrope;color:#fff;white-space:nowrap}
+.tc.best{border-color:var(--gold2);background:linear-gradient(135deg,#1f2a36,#2a2618)}
+.tc .tag{font-size:10px;font-weight:800;color:#1a140b;background:var(--gold);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.typing{display:inline-flex;gap:4px;padding:12px 14px;background:#182533;border-radius:14px;margin:6px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:#7f91a4;animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:.25}}
+/* pay sheet */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .35s;z-index:6}
+.dim.on{opacity:1;pointer-events:auto}
+.pay{position:absolute;left:0;right:0;bottom:0;background:#f7f5f1;color:#141414;border-radius:24px 24px 0 0;padding:10px 18px 22px;transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.9,.2,1);z-index:7}
+.pay.on{transform:none}
+.grab{width:40px;height:5px;border-radius:9px;background:#d6d1c8;margin:0 auto 12px}
+.pay h4{font-size:13px;color:#6d6a64;font-weight:600}
+.pay .sum{font:800 34px Manrope;letter-spacing:-.02em;margin:2px 0 12px;display:flex;align-items:baseline;gap:8px}
+.pay .sum s{font-size:15px;color:#a29d95;font-weight:600}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#ebe7df;border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:9px;font:700 13px Manrope;cursor:pointer;color:#6d6a64}
+.seg button.on{background:#fff;color:#111;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.pm{min-height:118px}
+.card{border-radius:14px;padding:14px;color:#fff;background:linear-gradient(130deg,#2b2a27,#4a4033 60%,#8a7350);height:110px;position:relative;overflow:hidden}
+.card:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.18) 45%,transparent 60%);transform:translateX(-100%);animation:sh 3s infinite}
+@keyframes sh{60%,100%{transform:translateX(100%)}}
+.card .n{font:600 16px Manrope;letter-spacing:.12em;margin-top:30px}
+.card .e{font-size:11px;opacity:.7;margin-top:4px}
+.qr{display:flex;gap:12px;align-items:center}
+.qr canvas{width:110px;height:110px;border-radius:10px;background:#fff;border:1px solid #e3ded5}
+.qr p{font-size:13px;color:#555}
+.promo{display:flex;gap:6px;margin:12px 0}
+.promo input{flex:1;border:1px solid #ddd6ca;border-radius:10px;padding:10px;font:600 13px Manrope;background:#fff}
+.promo button{border:0;border-radius:10px;padding:0 12px;background:#ebe7df;font:700 12px Manrope;cursor:pointer}
+.go{width:100%;border:0;border-radius:14px;padding:15px;background:#111;color:#fff;font:800 15px Manrope;cursor:pointer;position:relative;overflow:hidden}
+.go.ld{color:transparent}.go.ld:after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;border:2.5px solid #fff;border-right-color:transparent;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(1turn)}}
+.fine{font-size:11px;color:#8d887f;text-align:center;margin-top:8px}
+/* channel view */
+.chan{position:absolute;inset:0;background:#0e1621;z-index:8;transform:translateX(100%);transition:transform .55s cubic-bezier(.2,.9,.2,1)}
+.chan.on{transform:none}
+.chan .list{position:absolute;top:104px;bottom:0;left:0;right:0;overflow-y:auto;padding:12px 10px;scrollbar-width:none}
+.post{background:#182533;border-radius:16px;margin:8px 0;overflow:hidden;animation:pop .5s both;font-size:14px;color:#e9eef3}
+.post .im{height:120px;background:linear-gradient(135deg,#2b2318,#7a6038 60%,#e3c48d);position:relative}
+.post .im.b{background:linear-gradient(135deg,#13202c,#2a5b7d 60%,#8fd0ff)}
+.post .im i{position:absolute;right:12px;bottom:10px;font:400 24px "Instrument Serif";color:#fff}
+.post p{padding:10px 12px 4px}.post .ft{padding:0 12px 8px;font-size:11px;color:#7f91a4;display:flex;justify-content:space-between}
+.welcome{margin:10px auto;text-align:center;font-size:13px;background:rgba(0,0,0,.3);border-radius:99px;padding:5px 12px;width:max-content;color:#cfe1f2}
+/* confetti */
+.cf{position:absolute;inset:0;pointer-events:none;z-index:10}
+/* right side */
+.tabs{display:flex;gap:6px;border:1px solid var(--line);border-radius:14px;padding:4px;width:max-content;margin-bottom:20px;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;color:var(--mut);font:700 13px Manrope;padding:9px 14px;border-radius:10px;cursor:pointer;transition:.2s}
+.tabs button.on{background:var(--ink);color:#111}
+.pane{display:none;animation:fade .5s both}.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.flow{position:relative;display:grid;gap:12px}
+.node{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;transition:border-color .4s,background .4s,transform .4s}
+.node .ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#1c1f26;font-size:20px;transition:background .4s}
+.node b{display:block;font-size:15px}.node span{color:var(--mut);font-size:13.5px}
+.node .st{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7a7d86}
+.node.on{border-color:var(--gold2);background:linear-gradient(120deg,#1b1914,#13151a);transform:translateX(8px)}
+.node.on .ic{background:var(--gold)}.node.on .st{color:var(--gold)}
+.node.done .st{color:var(--ok)}
+.node:not(:last-child):after{content:"";position:absolute;left:37px;bottom:-13px;width:2px;height:12px;background:var(--line)}
+.node.done:not(:last-child):after{background:var(--ok)}
+.dash{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:640px){.dash{grid-template-columns:1fr 1fr}}
+.kp{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.kp span{font-size:12px;color:var(--mut)}.kp b{display:block;font:800 26px Manrope;letter-spacing:-.02em;margin-top:2px}
+.kp em{font-style:normal;font-size:12px;color:var(--ok)}
+.chart{grid-column:1/-1;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.chart svg{width:100%;height:150px;display:block}
+.subs{grid-column:1/-1;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:6px 16px}
+.row{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;align-items:center}
+.row:last-child{border:0}
+.row .s{font-size:11px;font-weight:800;border-radius:99px;padding:3px 9px}
+.s.a{background:rgba(95,211,154,.13);color:var(--ok)}.s.w{background:rgba(227,196,141,.14);color:var(--gold)}.s.x{background:rgba(255,122,107,.12);color:var(--bad)}
+.row.new{animation:hl 2s}
+@keyframes hl{0%{background:rgba(227,196,141,.18)}}
+.bc{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:12px 16px;font:700 13px Manrope;cursor:pointer;transition:.2s}
+.btn:hover{border-color:var(--gold2)}
+.btn.g{background:var(--gold);color:#1a140b;border-color:var(--gold)}
+.inc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.inc{grid-template-columns:1fr}}
+.inc div{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.inc b{display:block;margin-bottom:6px}.inc p{color:var(--mut);font-size:14px}
+.offer{margin-top:22px;border-radius:22px;padding:24px;background:linear-gradient(120deg,#1d1a14,#13151a);border:1px solid #3a3222;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.offer b{font:400 34px/1 "Instrument Serif";color:var(--gold)}
+.offer p{color:var(--mut);font-size:14px;max-width:440px}
+.hint{color:var(--mut);font-size:13px;margin:14px 0 0;text-align:center}
+.skip{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div><div class="chip"><i></i>Chatplace · Telegram · демо</div>
+ <h1>Бот, который <em>продаёт</em><br>доступ в канал сам</h1></div>
+ <p>Пройдите путь подписчика в телефоне - от /start до закрытого канала. Справа видно, какой шаг сценария сработал и что в этот момент видите вы в админке.</p>
+</header>
+
+<div class="wrap">
+ <div class="phw">
+  <div class="phone"><div class="scr" id="scr">
+   <div class="isl"></div>
+   <div class="sb"><span id="clk">9:41</span><span>●●● 5G ▮</span></div>
+   <div class="hd"><span class="bk">‹</span><div class="av">К</div><div><b>Клуб · бот</b><span id="st">бот</span></div><div class="r"><button id="rs">заново</button></div></div>
+   <div class="chat" id="chat"></div>
+   <div class="dim" id="dim"></div>
+   <div class="pay" id="pay"><div class="grab"></div>
+    <h4 id="pn">Подписка</h4>
+    <div class="sum"><span id="ps">990 ₽</span><s id="old"></s></div>
+    <div class="seg"><button class="on" data-m="card">Карта</button><button data-m="sbp">СБП</button></div>
+    <div class="pm" id="pm"></div>
+    <div class="promo"><input id="pc" placeholder="Промокод" value="CLUB10"><button id="pa">Применить</button></div>
+    <button class="go" id="pb">Оплатить</button>
+    <div class="fine">Безопасная оплата · чек придёт на почту</div>
+   </div>
+   <div class="chan" id="chan">
+    <div class="sb"><span>9:41</span><span>●●● 5G ▮</span></div>
+    <div class="hd"><span class="bk" id="back" style="cursor:pointer">‹</span><div class="av">К</div><div><b>Закрытый клуб</b><span id="subcnt">248 подписчиков</span></div></div>
+    <div class="list" id="clist"></div>
+   </div>
+   <canvas class="cf" id="cf"></canvas>
+  </div></div>
+  <p class="hint">Нажимайте кнопки в чате</p>
+  <div class="skip"><button class="btn" id="skip">⏩ Перемотать 27 дней</button></div>
+ </div>
+
+ <div>
+  <div class="tabs" id="tabs"><button class="on" data-p="flow">Сценарий</button><button data-p="admin">Админка</button><button data-p="inc">Что входит</button></div>
+
+  <div class="pane on" id="p-flow"><div class="flow" id="flow">
+   <div class="node" data-s="0"><div class="ic">👋</div><div><b>Приветствие</b><span>живая обложка, кто вы и что внутри канала</span></div><div class="st">ждёт</div></div>
+   <div class="node" data-s="1"><div class="ic">💎</div><div><b>Тарифы</b><span>карточки с выгодой, «лучший выбор», пробный период</span></div><div class="st">ждёт</div></div>
+   <div class="node" data-s="2"><div class="ic">💳</div><div><b>Оплата</b><span>карта или СБП по QR, промокоды, чек покупателю</span></div><div class="st">ждёт</div></div>
+   <div class="node" data-s="3"><div class="ic">🔓</div><div><b>Доступ</b><span>персональная одноразовая ссылка, заявка одобряется сама</span></div><div class="st">ждёт</div></div>
+   <div class="node" data-s="4"><div class="ic">🔔</div><div><b>Продление</b><span>напоминание за 3 дня, кнопка продлить в одно касание</span></div><div class="st">ждёт</div></div>
+   <div class="node" data-s="5"><div class="ic">🚪</div><div><b>Окончание</b><span>не продлил - бот убирает из канала и зовёт вернуться со скидкой</span></div><div class="st">ждёт</div></div>
+  </div></div>
+
+  <div class="pane" id="p-admin"><div class="dash">
+   <div class="kp"><span>Выручка за месяц</span><b id="rev">148 620 ₽</b><em id="revd">+12% к прошлому</em></div>
+   <div class="kp"><span>Активных подписок</span><b id="act">248</b><em>продлевают 71%</em></div>
+   <div class="kp"><span>Конверсия /start → оплата</span><b id="cv">18,4%</b><em>по воронке бота</em></div>
+   <div class="chart"><span style="font-size:12px;color:var(--mut)">Оплаты по дням</span><svg id="ch" viewBox="0 0 600 150" preserveAspectRatio="none"></svg></div>
+   <div class="subs" id="subs"></div>
+   <div class="bc"><button class="btn g" id="bcast">📣 Отправить рассылку подписчикам</button><button class="btn" id="exp">Выгрузить в таблицу</button></div>
+  </div></div>
+
+  <div class="pane" id="p-inc"><div class="inc">
+   <div><b>Настройка в Chatplace</b><p>Сценарий, кнопки, тексты, обложка в стиле вашего канала, любое число тарифов.</p></div>
+   <div><b>Оплата</b><p>Подключение платёжного сервиса: карта, СБП, чек покупателю, промокоды.</p></div>
+   <div><b>Закрытый канал</b><p>Одноразовые ссылки, автоодобрение заявок, удаление по окончании подписки.</p></div>
+   <div><b>Возврат ушедших</b><p>Напоминания о продлении и письмо-«скучаем» со скидкой тем, кто не продлил.</p></div>
+   <div><b>Месяц сопровождения</b><p>Слежу за оплатами и доступами, меняю тексты и тарифы по вашей просьбе.</p></div>
+   <div><b>Правки включены</b><p>Все правки по текстам, тарифам и оформлению уже входят в стоимость.</p></div>
+  </div>
+  <div class="offer"><div><b>8 000 ₽</b><p>Запуск за 1-2 дня · месяц сопровождения и правки включены в стоимость</p></div><button class="btn g" onclick="start();window.scrollTo({top:0})">Пройти сценарий ещё раз</button></div>
+  </div>
+ </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const chat=$('chat'),pay=$('pay'),dim=$('dim');
+let sel=null,disc=0,mode='card',day=0,timers=[];
+const now=()=>{const d=new Date(Date.now()+day*864e5);return d.toTimeString().slice(0,5)};
+setInterval(()=>$('clk').textContent=now(),1000);$('clk').textContent=now();
+const fmt=n=>n.toLocaleString('ru')+' ₽';
+function later(f,ms){timers.push(setTimeout(f,ms))}
+// flow nodes
+function step(n){document.querySelectorAll('.node').forEach(e=>{const s=+e.dataset.s;e.classList.toggle('on',s===n);e.classList.toggle('done',s<n);e.querySelector('.st').textContent=s===n?'сейчас':s<n?'готово':'ждёт'})}
+function scroll(){chat.scrollTo({top:chat.scrollHeight})}
+function add(html,cls=''){const d=document.createElement('div');d.className='m '+cls;d.innerHTML=html+`<span class="t">${now()}${cls.includes('me')?' ✓✓':''}</span>`;chat.appendChild(d);scroll();return d}
+function kb(btns,two){const k=document.createElement('div');k.className='kb'+(two?' two':'');btns.forEach(([t,f])=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{k.querySelectorAll('button').forEach(x=>x.disabled=true);add(t,'me');f()};k.appendChild(b)});chat.appendChild(k);scroll()}
+function bot(fn,ms=750){const ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';chat.appendChild(ty);scroll();$('st').textContent='печатает…';
+ later(()=>{ty.remove();$('st').textContent='бот';fn()},ms)}
+// animated cover
+function cover(el){const c=document.createElement('canvas');el.prepend(c);const x=c.getContext('2d');let t=0;
+ function fr(){const w=c.width=c.offsetWidth*2,h=c.height=c.offsetHeight*2;if(!w)return;
+  const g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,'#140f09');g.addColorStop(1,'#3b2c18');x.fillStyle=g;x.fillRect(0,0,w,h);
+  for(let i=0;i<5;i++){const r=h*(.5+i*.22),cx=w*.82+Math.sin(t/60+i)*20,cy=h*.2+Math.cos(t/70+i)*14;
+   x.strokeStyle=`rgba(227,196,141,${.5-i*.08})`;x.lineWidth=2;x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.stroke()}
+  for(let i=0;i<40;i++){const px=(i*97+t*.6)%w,py=(i*53)%h+Math.sin(t/30+i)*6;x.fillStyle=`rgba(246,226,184,${(i%5)/10})`;x.fillRect(px,py,2,2)}
+  t++;if(document.body.contains(c))requestAnimationFrame(fr)}fr()}
+function tarifs(){step(1);bot(()=>{add('Выберите тариф. Чем дольше - тем выгоднее 👇');
+ const w=document.createElement('div');w.className='tar';
+ [['1 месяц','знакомство с клубом',990,0],['3 месяца','экономия 480 ₽',2490,1],['Навсегда','один платёж, без продлений',6900,0]].forEach(([n,s,p,b])=>{
+  const e=document.createElement('button');e.className='tc'+(b?' best':'');e.innerHTML=`<div><b>${n}${b?'<span class="tag">ЛУЧШИЙ</span>':''}</b><span>${s}</span></div><div class="p">${fmt(p)}</div>`;
+  e.onclick=()=>{w.querySelectorAll('.tc').forEach(x=>{x.style.pointerEvents='none';x.style.opacity=x===e?1:.4});add(`${n} - ${fmt(p)}`,'me');buy(n,p)};w.appendChild(e)});
+ chat.appendChild(w);scroll()})}
+function about(){bot(()=>{add('Внутри клуба:\n• 3-4 авторских поста в неделю\n• эфир раз в месяц + запись\n• чат участников без рекламы\n• архив всех материалов');kb([['💎 К тарифам',tarifs]])})}
+function setSum(){const p=Math.round(sel[1]*(1-disc));$('ps').textContent=fmt(p);$('old').textContent=disc?fmt(sel[1]):''}
+function payMode(){$('pm').innerHTML=mode==='card'?'<div class="card"><div style="font-size:12px;opacity:.8">ВАША КАРТА</div><div class="n">•••• •••• •••• 4417</div><div class="e">12/28</div></div>':'<div class="qr"><canvas id="qrc" width="110" height="110"></canvas><p>Отсканируйте QR в приложении банка или нажмите «Оплатить» - откроется банк.</p></div>';
+ if(mode==='sbp'){const c=$('qrc').getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,110,110);c.fillStyle='#111';for(let i=0;i<21;i++)for(let j=0;j<21;j++){const f=(i<7&&j<7)||(i>13&&j<7)||(i<7&&j>13);const v=f?((i%14<7&&j%14<7)&&((i%14==0||i%14==6||j%14==0||j%14==6)||(i%14>1&&i%14<5&&j%14>1&&j%14<5))):((i*7+j*13+i*j)%3==0);if(v)c.fillRect(6+i*4.6,6+j*4.6,4.6,4.6)}}}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));mode=b.dataset.m;payMode()});
+$('pa').onclick=()=>{if($('pc').value.trim().toUpperCase()==='CLUB10'){disc=.1;setSum();$('pa').textContent='−10% ✓'}else{$('pa').textContent='нет такого'}};
+function openPay(){dim.classList.add('on');pay.classList.add('on')}
+function closePay(){dim.classList.remove('on');pay.classList.remove('on')}
+dim.onclick=closePay;
+function buy(n,p){step(2);sel=[n,p];disc=0;$('pa').textContent='Применить';bot(()=>{add(`Тариф «${n}». Нажмите «Оплатить» - откроется безопасная форма. Есть промокод? Введите его там.`);
+ kb([['💳 Оплатить '+fmt(p),()=>{$('pn').textContent='Подписка: '+n;setSum();payMode();openPay()}]])})}
+$('pb').onclick=()=>{const b=$('pb');b.classList.add('ld');later(()=>{b.classList.remove('ld');closePay();paid()},1300)};
+function paid(){step(3);const sum=Math.round(sel[1]*(1-disc));newSub('Вы (демо)',sum);
+ bot(()=>{add('✅ Оплата прошла! Чек отправлен на почту.\n\nВаша персональная ссылка в клуб - одноразовая, действует 24 часа:');confetti();
+  kb([['🔓 Войти в закрытый клуб',()=>{bot(enter,600)}]])})}
+function enter(){const l=$('clist');l.innerHTML=`<div class="welcome">Вы вступили в канал</div>
+ <div class="post" style="animation-delay:.1s"><div class="im"><i>Разбор недели</i></div><p>Сегодня разбираем три ошибки, из-за которых…</p><div class="ft"><span>👁 1,2K</span><span>10:15</span></div></div>
+ <div class="post" style="animation-delay:.25s"><div class="im b"><i>Эфир · четверг</i></div><p>Ссылка на эфир появится здесь за час до начала.</p><div class="ft"><span>👁 980</span><span>вчера</span></div></div>
+ <div class="post" style="animation-delay:.4s"><p>Добро пожаловать в клуб! Начните с закрепа - там вся навигация 📌</p><div class="ft"><span>👁 2,4K</span><span>закреп</span></div></div>`;
+ $('subcnt').textContent='249 подписчиков';$('chan').classList.add('on');
+ later(()=>{add('Вы в клубе 🎉 Если потеряете ссылку - нажмите /start, я пришлю новую.','sys')},800)}
+$('back').onclick=()=>{$('chan').classList.remove('on');if(sel&&sel[0]!=='Навсегда')add('Совет: нажмите «⏩ Перемотать 27 дней» под телефоном - покажу, как работает продление.','sys')};
+$('skip').onclick=()=>{if(!sel){add('Сначала оформите подписку 🙂','sys');return}$('chan').classList.remove('on');day+=27;
+ const d=document.createElement('div');d.className='day';d.innerHTML='<span>через 27 дней</span>';chat.appendChild(d);
+ if(sel[0]==='Навсегда'){bot(()=>add('Доступ бессрочный - продлевать ничего не нужно. Хорошего дня в клубе ✨'));return}
+ step(4);markRow('w');bot(()=>{add('🔔 Подписка заканчивается через 3 дня.\nПродлите сейчас - доступ не прервётся ни на минуту.');
+  kb([['🔁 Продлить',()=>{markRow('a');tarifs()}],['Не сейчас',()=>{bot(()=>{day+=3;step(5);markRow('x');add('Подписка закончилась - доступ в канал закрыт.\n\nВозвращайтесь: для вас скидка 20% на 3 дня 🎁');kb([['Вернуться со скидкой',()=>{markRow('a');tarifs()}]])})}]],true)})};
+// confetti
+function confetti(){const c=$('cf'),x=c.getContext('2d');c.width=c.offsetWidth;c.height=c.offsetHeight;const P=[...Array(90)].map(()=>({x:c.width/2,y:c.height*.55,vx:(Math.random()-.5)*9,vy:-Math.random()*10-4,r:Math.random()*6+3,c:['#e3c48d','#f6e2b8','#2aabee','#fff'][Math.random()*4|0],a:Math.random()*6}));let f=0;
+ (function fr(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.32;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore()});if(++f<110)requestAnimationFrame(fr);else x.clearRect(0,0,c.width,c.height)})()}
+// admin
+let rev=148620,act=248;const subs=[['Марина К.','3 месяца','a'],['Олег Т.','1 месяц','w'],['Анна В.','Навсегда','a'],['Игорь Л.','1 месяц','x']];
+const lbl={a:'активна',w:'истекает',x:'закончилась'};
+function drawSubs(nw){$('subs').innerHTML=subs.map((s,i)=>`<div class="row${nw&&i===0?' new':''}"><span>${s[0]}</span><span style="color:var(--mut)">${s[1]}</span><span class="s ${s[2]}">${lbl[s[2]]}</span></div>`).join('')}
+function newSub(n,sum){subs.unshift([n,sel[0],'a']);rev+=sum;act++;$('rev').textContent=fmt(rev);$('act').textContent=act;$('revd').textContent='+'+fmt(sum)+' только что';drawSubs(1);bars(sum)}
+function markRow(s){const r=subs.find(x=>x[0]==='Вы (демо)');if(r){r[2]=s;drawSubs()}}
+let data=[...Array(30)].map((_,i)=>3000+Math.round(Math.abs(Math.sin(i*1.7))*5200+i*90));
+function bars(extra){if(extra)data[data.length-1]+=extra;const mx=Math.max(...data),w=600/data.length;
+ $('ch').innerHTML=data.map((v,i)=>`<rect x="${i*w+2}" y="${150-v/mx*140}" width="${w-4}" height="${v/mx*140}" rx="3" fill="${i===data.length-1?'#e3c48d':'#2a2d35'}"/>`).join('')}
+$('bcast').onclick=()=>{add('📣 Рассылка: «В четверг эфир в 19:00 - приходите с вопросами!»','sys');$('bcast').textContent='✓ Отправлено '+act+' подписчикам'};
+$('exp').onclick=()=>{$('exp').textContent='✓ Таблица готова'};
+drawSubs();bars();
+// tabs
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p))});
+function start(){timers.forEach(clearTimeout);timers=[];chat.innerHTML='<div class="day"><span>Сегодня</span></div>';day=0;sel=null;closePay();$('chan').classList.remove('on');step(0);
+ add('/start','me');bot(()=>{const d=add('<div class="cover"><b>Закрытый клуб</b><small>авторский канал</small></div>Привет! Здесь закрытый канал: авторские материалы, разборы и живое общение без рекламы.\n\nС чего начнём?');cover(d.querySelector('.cover'));
+  kb([['💎 Тарифы и доступ',tarifs],['👀 Что внутри',about]],true)},900)}
+$('rs').onclick=start;start();
+</script>
+</body>
+</html>
