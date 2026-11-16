@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Бот: разовый доступ в канал на 30 дней</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2efe9;--ink:#1d1b19;--mute:#5f5953;--line:#e3ddd3;--ac:#2f6f5e;--tg:#5b8fc7;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 24px 60px;display:grid;grid-template-columns:400px 1fr;gap:56px;align-items:start}
+.top{grid-column:1/-1}
+.top small{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+.top h1{font-size:clamp(28px,3.4vw,42px);line-height:1.12;letter-spacing:-.03em;margin:10px 0 8px}
+.top p{color:var(--mute);max-width:640px}
+/* phone */
+.ph{position:sticky;top:20px;width:380px;height:760px;border-radius:46px;background:#111;padding:12px;box-shadow:0 40px 70px -40px rgba(0,0,0,.55)}
+.scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#dfe7ef}
+.bar{height:58px;background:#fff;display:flex;align-items:center;gap:12px;padding:16px 16px 0;border-bottom:1px solid #e6e9ee}
+.bar .av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.bar b{display:block;font-size:15px;line-height:1.2}.bar span{font-size:12px;color:#5f6670}
+.chat{position:absolute;top:58px;bottom:0;left:0;right:0;overflow-y:auto;padding:14px 12px 20px;display:flex;flex-direction:column;gap:8px;scroll-behavior:smooth;background:linear-gradient(160deg,#cfe0d6,#dbe4ee)}
+.m{max-width:86%;background:#fff;border-radius:16px 16px 16px 6px;padding:10px 12px;font-size:14.5px;line-height:1.42;box-shadow:0 1px 1px rgba(0,0,0,.06);opacity:0;transform:translateY(8px);animation:in .35s var(--ease) forwards}
+.m.u{align-self:flex-end;background:#e1f6cb;border-radius:16px 16px 6px 16px}
+.m.sys{align-self:center;background:rgba(0,0,0,.28);color:#fff;font-size:12.5px;border-radius:12px;padding:5px 12px;max-width:none}
+@keyframes in{to{opacity:1;transform:none}}
+.m .doc{display:block;font-size:12px;color:var(--mute);margin-top:8px;line-height:1.4}
+.m .doc a{color:var(--tg);cursor:pointer;text-decoration:underline}
+.kb{display:grid;gap:6px;margin-top:2px;max-width:86%;opacity:0;animation:in .35s .1s var(--ease) forwards}
+.kb button{background:rgba(255,255,255,.85);border-radius:12px;padding:11px;font-weight:700;font-size:14px;color:#2a6db0;transition:background .2s}
+.kb button:hover{background:#fff}
+.kb button:disabled{opacity:.45;cursor:default}
+.start{position:absolute;inset:58px 0 0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;background:linear-gradient(160deg,#cfe0d6,#dbe4ee);z-index:3;transition:opacity .4s}
+.start.off{opacity:0;pointer-events:none}
+.start .story{background:#1d1b19;color:#fff;border-radius:22px;padding:22px;margin-bottom:auto;margin-top:20px}
+.start .story small{opacity:.6;font-size:12px}
+.start .story p{font-size:20px;font-weight:700;line-height:1.25;margin:10px 0 16px}
+.start .story span{display:inline-block;background:#fff;color:var(--ink);font-weight:700;font-size:14px;padding:8px 14px;border-radius:99px}
+.start button{background:var(--tg);color:#fff;border-radius:14px;padding:15px;font-weight:800;font-size:16px}
+/* prodamus sheet */
+.pay{position:absolute;inset:0;background:#fff;z-index:5;transform:translateY(100%);transition:transform .45s var(--ease);display:flex;flex-direction:column}
+.pay.on{transform:none}
+.pay .h{padding:22px 18px 14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.pay .h b{font-size:15px}.pay .h span{font-size:12px;color:#6b6b6b}
+.pay .bd{padding:18px;flex:1;display:flex;flex-direction:column;gap:12px}
+.pay .sum{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.pay .sum small{display:block;font-size:13px;color:var(--mute);font-weight:500;letter-spacing:0}
+.pay input[type=email]{height:48px;border:1.5px solid #e2e2e2;border-radius:12px;padding:0 14px;font:inherit;font-size:15px}
+.pay .ways{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pay .ways button{border:1.5px solid #e2e2e2;border-radius:12px;padding:12px;font-weight:700;font-size:14px}
+.pay .ways button.on{border-color:var(--ink);background:#f7f5f2}
+.pay label{display:flex;gap:10px;font-size:12.5px;color:#666;line-height:1.4;align-items:flex-start}
+.pay label input{margin-top:2px;width:17px;height:17px;accent-color:var(--ac);flex:none}
+.pay label a{color:var(--tg);cursor:pointer}
+.pay .go{margin-top:auto;height:54px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:16px}
+.pay .go:disabled{opacity:.35}
+.pay .note{font-size:11.5px;color:#6b6b6b;text-align:center}
+/* right */
+.side h2{font-size:22px;letter-spacing:-.02em;margin-bottom:16px}
+.steps{list-style:none;display:grid;gap:10px;margin-bottom:28px}
+.steps li{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;transition:border-color .3s,box-shadow .3s,opacity .3s;opacity:.6}
+.steps li.on{opacity:1;border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.steps li.done{opacity:1}
+.steps li i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14px}
+.steps li.done i{background:var(--ac);color:#fff}
+.steps b{display:block;font-size:15.5px}.steps span{font-size:14px;color:var(--mute)}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.ctrl button{height:44px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:14px}
+.ctrl button:hover{border-color:var(--ink)}
+.ctrl button:disabled{opacity:.4}
+.docs{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+.docs h3{font-size:17px;margin-bottom:6px}.docs p{font-size:14px;color:var(--mute);margin-bottom:12px}
+.docs .row{display:flex;gap:8px;flex-wrap:wrap}
+.docs .row button{height:40px;padding:0 14px;border-radius:10px;background:var(--bg);font-weight:600;font-size:14px}
+.docs .row button:hover{background:var(--ink);color:#fff}
+.need{margin-top:20px;font-size:14px;color:var(--mute)}.need b{color:var(--ink)}
+/* doc modal */
+.md{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.md.on{opacity:1;pointer-events:auto}
+.md .in{background:#fff;border-radius:20px;max-width:560px;width:100%;max-height:82vh;overflow:auto;padding:28px;position:relative}
+.md .x{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;background:var(--bg);font-size:20px}
+.md h3{font-size:20px;margin-bottom:4px;padding-right:40px}.md .tg{font-size:12px;color:var(--mute);margin-bottom:14px}
+.md ol{padding-left:20px;display:grid;gap:8px;font-size:14.5px}
+.md mark{background:#fff1c9;padding:0 3px;border-radius:3px}
+@media (max-width:900px){.wrap{grid-template-columns:1fr;gap:28px;padding:24px 16px 50px}.ph{position:relative;top:0;margin:0 auto;width:min(380px,100%);height:720px}}
+</style></head><body>
+<div class="wrap">
+ <div class="top"><small>Демо по вашему ТЗ</small><h1>Ссылка из сторис → оплата → закрытый канал на 30 дней</h1><p>Без подписки и лишних текстов. Нажимайте кнопки в телефоне: так пройдёт путь ваш подписчик. Цена 1 990 ₽ в демо условная - поставлю вашу.</p></div>
+
+ <div class="ph"><div class="scr">
+  <div class="bar"><span class="av">Л</span><div><b>Пространство Лизы</b><span>бот</span></div></div>
+  <div class="start" id="start"><div class="story"><small>ваша сторис</small><p>Всё расскажу внутри.<br>Ссылка - ниже 👇</p><span>t.me/ваш_бот</span></div><button id="bStart">Перейти по ссылке</button></div>
+  <div class="chat" id="chat"></div>
+  <div class="pay" id="pay">
+   <div class="h"><b>Оплата · Prodamus</b><span>защищённое соединение</span></div>
+   <div class="bd">
+    <div class="sum">1 990 ₽<small>Доступ в закрытый канал на 30 дней · разовая оплата</small></div>
+    <input type="email" placeholder="E-mail для чека" value="anna@mail.ru">
+    <div class="ways"><button class="on">Картой</button><button>СБП</button></div>
+    <label><input type="checkbox" id="agree">Я принимаю <a data-doc="of">оферту</a> и даю <a data-doc="sg">согласие на обработку персональных данных</a></label>
+    <button class="go" id="bPay" disabled>Оплатить 1 990 ₽</button>
+    <div class="note">Чек самозанятого придёт на почту автоматически</div>
+   </div>
+  </div>
+ </div></div>
+
+ <div class="side">
+  <h2>Как работает</h2>
+  <ol class="steps" id="steps">
+   <li class="on"><i>1</i><div><b>Переход из сторис</b><span>Человек нажимает ссылку - бот сразу показывает оплату. Без рассказов о продукте.</span></div></li>
+   <li><i>2</i><div><b>Оплата через ваш Prodamus</b><span>Карта или СБП. Галочка согласия с офертой и обработкой ПД - на странице оплаты.</span></div></li>
+   <li><i>3</i><div><b>Личная одноразовая ссылка</b><span>Сразу после оплаты. По ней войдёт только тот, кто заплатил.</span></div></li>
+   <li><i>4</i><div><b>Через 30 дней - удаление</b><span>Без автосписаний. За день до конца - короткое напоминание с кнопкой разовой оплаты.</span></div></li>
+  </ol>
+  <div class="ctrl"><button id="bSkip1" disabled>Перемотать 29 дней</button><button id="bSkip2" disabled>Ещё 1 день</button><button id="bReset">Сначала</button></div>
+  <div class="docs"><h3>Документы для самозанятой</h3><p>Отдельные страницы, ссылки - в боте перед оплатой и на странице Prodamus. Ниже - структура шаблонов, которые я подготовлю (жёлтым - что вписываете вы).</p>
+   <div class="row"><button data-doc="of">Оферта</button><button data-doc="pol">Политика обработки ПД</button><button data-doc="sg">Согласие на обработку ПД</button></div></div>
+  <p class="need">От вас нужно: <b>цена доступа</b>, <b>доступ к Prodamus</b> и <b>закрытый канал</b>, куда я добавлю бота администратором.</p>
+ </div>
+</div>
+
+<div class="md" id="md"><div class="in"><button class="x" id="mx">×</button><h3 id="mdT"></h3><div class="tg">шаблон · отдельная страница (Telegraph или ваш сайт)</div><ol id="mdL"></ol></div></div>
+
+<script>
+const $=s=>document.querySelector(s),chat=$('#chat'),steps=[...document.querySelectorAll('#steps li')];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const DOC='<span class="doc">Нажимая «Оплатить», вы принимаете <a data-doc="of">оферту</a> и даёте <a data-doc="sg">согласие на обработку персональных данных</a> (<a data-doc="pol">политика</a>)</span>';
+function step(i){steps.forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.toggle('done',k<i)})}
+function msg(html,cls=''){const d=document.createElement('div');d.className='m '+cls;d.innerHTML=html;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d}
+function kb(btns){const d=document.createElement('div');d.className='kb';btns.forEach(([t,f])=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{d.querySelectorAll('button').forEach(x=>x.disabled=true);f()};d.appendChild(b)});chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+async function offer(text){msg(text+DOC);await wait(250);kb([['Оплатить 1 990 ₽',openPay]])}
+async function begin(){$('#start').classList.add('off');msg('/start','u');await wait(500);await offer('<b>Доступ в закрытый канал на 30 дней</b><br>1 990 ₽ · разовая оплата<br>');}
+function openPay(){step(1);$('#pay').classList.add('on')}
+$('#agree').onchange=e=>$('#bPay').disabled=!e.target.checked;
+document.querySelectorAll('.pay .ways button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pay .ways button').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+$('#bPay').onclick=async()=>{$('#bPay').textContent='Оплата…';await wait(900);$('#pay').classList.remove('on');$('#bPay').textContent='Оплатить 1 990 ₽';step(2);
+ await wait(400);msg('Оплата прошла ✅<br>Ваша личная ссылка - сработает один раз:');await wait(250);
+ kb([['Войти в канал',async()=>{msg('Вы вступили в канал «Пространство Лизы»','sys');await wait(300);msg('Доступ открыт до <b>16 декабря</b>. Добро пожаловать 🤍');step(3);$('#bSkip1').disabled=false}]])};
+$('#bSkip1').onclick=async()=>{$('#bSkip1').disabled=true;msg('прошло 29 дней','sys');await wait(400);await offer('Завтра закончится ваш доступ в канал.<br>Остаться ещё на 30 дней - разовой оплатой:<br>');$('#bSkip2').disabled=false};
+$('#bSkip2').onclick=async()=>{$('#bSkip2').disabled=true;msg('прошёл ещё 1 день','sys');await wait(400);msg('Бот удалил вас из канала','sys');await wait(300);await offer('Доступ завершён. Вернуться можно в любой момент:<br>');steps.forEach(s=>{s.classList.add('done');s.classList.remove('on')})};
+$('#bReset').onclick=()=>{chat.innerHTML='';$('#start').classList.remove('off');$('#pay').classList.remove('on');$('#agree').checked=false;$('#bPay').disabled=true;$('#bSkip1').disabled=true;$('#bSkip2').disabled=true;step(0)};
+$('#bStart').onclick=begin;
+const D={of:['Публичная оферта',['Кто продаёт: <mark>ФИО</mark>, самозанятая (НПД), <mark>ИНН</mark>, e-mail для связи','Что продаётся: доступ в закрытый Telegram-канал на 30 дней с момента оплаты','Цена и оплата: <mark>сумма</mark> ₽, разовая оплата через Prodamus, чек самозанятого','Как оказывается услуга: личная одноразовая ссылка в канал сразу после оплаты','Срок и окончание доступа: через 30 дней доступ закрывается автоматически, без автосписаний','Возврат: <mark>ваши условия</mark>','Акцепт: оплата означает согласие с офертой']],
+ pol:['Политика обработки персональных данных',['Оператор: <mark>ФИО</mark>, <mark>ИНН</mark>, контакт для запросов','Какие данные: имя и ID в Telegram, e-mail для чека, данные об оплате','Зачем: доступ в канал, отправка чека, напоминание об окончании доступа','Где хранятся и сколько: <mark>срок</mark>, удаление по запросу','Кому передаются: платёжный сервис Prodamus - только для оплаты','Права человека: узнать, изменить, удалить данные, отозвать согласие']],
+ sg:['Согласие на обработку персональных данных',['Отдельный документ - по закону согласие нельзя прятать внутри политики','Кому даётся согласие: <mark>ФИО</mark>, самозанятая, <mark>ИНН</mark>','Какие данные и для каких целей - перечень','Какие действия с данными: сбор, хранение, использование, удаление','Срок действия и как отозвать согласие (e-mail)','Галочка на странице оплаты = согласие дано']]};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-doc]');if(!a)return;const d=D[a.dataset.doc];$('#mdT').textContent=d[0];$('#mdL').innerHTML=d[1].map(x=>'<li>'+x+'</li>').join('');$('#md').classList.add('on')});
+$('#mx').onclick=()=>$('#md').classList.remove('on');$('#md').onclick=e=>{if(e.target.id==='md')$('#md').classList.remove('on')};
+</script>
+</body></html>
